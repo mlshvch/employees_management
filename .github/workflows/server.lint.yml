@@ -1,0 +1,24 @@
+name: server lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+    - master
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./server
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run linter
+      run: yarn lint

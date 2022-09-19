@@ -1,0 +1,24 @@
+name: server test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+    - master
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./server
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run tests
+      run: yarn test
