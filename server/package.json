@@ -4,5 +4,8 @@
   "description": "Employee Management System API",
   "main": "app.js",
   "author": "mlshvch",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.8.3"
+  }
 }
