@@ -1,0 +1,10 @@
+env:
+  browser: true
+  es6: true
+  jest: true
+extends: standard-with-typescript
+overrides: []
+parserOptions:
+  ecmaVersion: latest
+  project: tsconfig.json
+rules: {}
