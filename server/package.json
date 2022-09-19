@@ -1,0 +1,8 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Employee Management System API",
+  "main": "app.js",
+  "author": "mlshvch",
+  "license": "MIT"
+}
