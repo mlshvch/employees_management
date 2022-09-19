@@ -1,4 +1,4 @@
-name: Lint
+name: server lint
 
 on:
   push:
@@ -7,6 +7,11 @@ on:
   pull_request:
     branches:
     - master
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./server
 
 jobs:
   build:
