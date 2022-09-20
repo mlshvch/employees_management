@@ -2,10 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Employee Management System API",
-  "main": "app.js",
+  "main": "./src/app.ts",
   "author": "mlshvch",
   "license": "MIT",
   "scripts": {
+    "start": "npx nodemon ./src/app.ts",
     "test": "npx jest",
     "lint": "npx eslint -c ./config/.eslintrc.yml --fix ."
   },
