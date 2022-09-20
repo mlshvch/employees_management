@@ -6,9 +6,10 @@
   "author": "mlshvch",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "lint": "npx eslint -c ./config/.eslintrc.yml --fix .",
     "start": "npx nodemon ./src/app.ts",
-    "test": "npx jest",
-    "lint": "npx eslint -c ./config/.eslintrc.yml --fix ."
+    "test": "npx jest"
   },
   "dependencies": {
     "@types/jest": "^29.0.3",
