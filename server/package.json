@@ -11,6 +11,9 @@
     "start": "npx nodemon ./src/app.ts",
     "test": "npx jest"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^4.3.1",
     "@types/jest": "^29.0.3",
