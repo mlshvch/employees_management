@@ -21,4 +21,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Run linter
-      run: yarn lint
+      run: npx eslint -c ./config/.eslintrc.yml .
