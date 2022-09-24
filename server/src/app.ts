@@ -11,6 +11,4 @@ app.use('/graphql', graphqlHTTP({
   graphiql: process.env.NODE_ENV === 'development'
 }))
 
-console.log(process.env.NODE_ENV)
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+module.exports = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
