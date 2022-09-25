@@ -16,6 +16,5 @@ app.use('/graphql', graphqlHTTP(
     graphiql: process.env.NODE_ENV === 'development'
   })
 )
-app.listen(port)
 
-module.exports = app
+module.exports = app.listen(port)
