@@ -1,5 +1,4 @@
 import express, { Express, Request, Response } from 'express'
-<<<<<<< HEAD
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
@@ -95,10 +94,3 @@ app.use('/graphql',
 )
 
 module.exports = app.listen(port)
-=======
-const app: Express = express()
-const port = 3000
-
-app.get('/', (req: Request, res: Response) => res.send('Hello World!'))
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
->>>>>>> 90ce96b (Dev/init-express (#3))
