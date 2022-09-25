@@ -9,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+<<<<<<< HEAD
 
 enum Role {
   USER
@@ -68,3 +69,5 @@ model Employee {
   @@index([name, surname])
   @@index([departmentId])
 }
+=======
+>>>>>>> 5f905fd (Dev/integrate-orm (#5))
