@@ -1,14 +1,21 @@
-import express, { Express, Request, Response } from 'express'
-import { buildSchema } from 'graphql'
-import { graphqlHTTP } from 'express-graphql';
-const schema = require('./graphql/schema')
-require('dotenv').config()
+import express, { Express } from 'express'
+import { graphqlHTTP } from 'express-graphql'
+import schemaParams = require('./graphql/schema')
+import { GraphQLSchema } from 'graphql'
+import dotenv = require('dotenv')
+dotenv.config()
+
 const app: Express = express()
-const port = process.env.PORT
+const port = process.env.PORT ?? 4000
+const schema: GraphQLSchema = new GraphQLSchema(schemaParams)
 
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  graphiql: process.env.NODE_ENV === 'development'
-}))
+/* eslint-disable @typescript-eslint/no-misused-promises */
+app.use('/graphql', graphqlHTTP(
+  {
+    schema,
+    graphiql: process.env.NODE_ENV === 'development'
+  })
+)
+app.listen(port)
 
-module.exports = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+module.exports = app

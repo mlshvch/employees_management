@@ -1,4 +1,4 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString } from 'graphql'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -6,19 +6,20 @@ const rootQuery = new GraphQLObjectType({
     helloWorld: {
       type: GraphQLString,
       args: {},
-      resolve(parent, args) {
-        return "Hello, World!"
+      resolve (parent, args) {
+        return 'Hello, World!'
       }
     }
   }
 })
 
-const mutation = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {}
-})
+// commented because of mutations absence
+// const mutation = new GraphQLObjectType({
+//   name: 'Mutation',
+//   fields: {}
+// })
 
-module.exports = new GraphQLSchema({
-  query: rootQuery,
+module.exports = ({
+  query: rootQuery
   // mutation: mutation
 })
