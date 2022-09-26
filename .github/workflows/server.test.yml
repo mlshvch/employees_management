@@ -1,4 +1,4 @@
-name: PostgreSQL service example
+name: server tests
 on: push
 
 defaults:
