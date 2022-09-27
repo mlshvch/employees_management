@@ -42,7 +42,7 @@ describe('user model', () => {
   it('do not save if password length is less than 8 symbols', () => {
     userData.password = faker.random.alphaNumeric(Math.floor(Math.random() * 7))
     expect(userData.password.length).toBeLessThan(8)
-    
+
     /* eslint-disable @typescript-eslint/no-unused-expressions */
     expect(async () => await prisma.user.create({
       data: userData
