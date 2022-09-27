@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 enum Role {
   USER
@@ -25,11 +26,21 @@ model User {
   created_at DateTime     @default(now())
   Department Department[]
   Employee   Employee[]
+=======
+
+model User {
+  id         BigInt   @id @default(autoincrement())
+  uid        String   @unique
+  password   String
+  tokens     Json
+  created_at DateTime @default(now())
+>>>>>>> 644debb (Dev/create user model (#7))
 
   @@index([id], type: Hash)
   @@index([uid], type: Hash)
   @@index([tokens], type: Hash)
 }
+<<<<<<< HEAD
 
 model Department {
   id          BigInt     @id @default(autoincrement())
@@ -71,3 +82,5 @@ model Employee {
 }
 =======
 >>>>>>> 5f905fd (Dev/integrate-orm (#5))
+=======
+>>>>>>> 644debb (Dev/create user model (#7))

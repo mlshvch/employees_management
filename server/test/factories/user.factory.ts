@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+<<<<<<< HEAD
 import { prisma } from '../../db'
 import { User } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
@@ -7,11 +8,20 @@ export function createRandomUserData (uid: string = faker.internet.email(), pass
   return {
     uid,
     password,
+=======
+
+export function createRandomUser (): any {
+  return {
+    id: faker.datatype.bigInt(),
+    uid: faker.internet.email(),
+    password: faker.random.alphaNumeric(10),
+>>>>>>> 644debb (Dev/create user model (#7))
     tokens: JSON.parse('{}'),
     created_at: new Date()
   }
 }
 
+<<<<<<< HEAD
 export function createRandomUsersData (number: number = 1): Array<{ uid: string, password: string, tokens: {} }> {
   if (number < 1) throw new Error(`Negative value or zero passed\nvalue: ${number}`)
   return new Array(number).fill(true).map(() => { return createRandomUserData() })
@@ -51,4 +61,9 @@ export const selectRandomUser = async (): Promise<User> => {
       console.log(err.message)
       return await createRandomUser()
     })
+=======
+export function createRandomUsers (number: number = 1): object[] {
+  if (number < 1) throw new Error(`Negative value or zero passed\nvalue: ${number}`)
+  return new Array(number).fill(createRandomUser)
+>>>>>>> 644debb (Dev/create user model (#7))
 }
