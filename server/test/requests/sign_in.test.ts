@@ -9,6 +9,7 @@ const app = require('../../src/app')
 
 const prisma = new PrismaClient()
 const userData: User = createRandomUser()
+const endpoint: string = '/graphql/auth'
 let createdUser: User
 afterAll(() => {
   app.close()
@@ -26,7 +27,7 @@ beforeAll(async () => {
 
 describe('SignIn Mutation', () => {
   it('return true if user exists', async () => {
-    const res = await request(app).post('/graphql')
+    const res = await request(app).post(endpoint)
       .send({ query: `mutation { signIn(uid: "${userData.uid}", password: "${userData.password}") { token } }` })
     expect(res.body.data.signIn).toBeTruthy()
   })
@@ -35,7 +36,7 @@ describe('SignIn Mutation', () => {
   if (!secretToken) throw new Error('token is not defined')
 
   it('returns signed token ', async () => {
-    const res = await request(app).post('/graphql')
+    const res = await request(app).post(endpoint)
       .send({ query: `mutation { signIn(uid: "${userData.uid}", password: "${userData.password}") { token } }` })
     const token: string = res.body.data.signIn.token
     expect(jwt.verify(token, secretToken)).toBeTruthy()
@@ -49,7 +50,7 @@ describe('SignIn Mutation', () => {
   })
 
   it('updates user tokens record', async () => {
-    const res = await request(app).post('/graphql')
+    const res = await request(app).post(endpoint)
       .send({ query: `mutation { signIn(uid: "${userData.uid}", password: "${userData.password}") { token } }` })
     const token: string = res.body.data.signIn.token
     const tokenId = token.split('.')[2]
