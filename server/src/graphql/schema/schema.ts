@@ -1,6 +1,4 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
-import { signUpMutation } from './mutations/sign_up'
-import { signInMutation } from './mutations/sign_in'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -17,15 +15,6 @@ const rootQuery = new GraphQLObjectType({
   }
 })
 
-const mutation = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    signUp: signUpMutation,
-    signIn: signInMutation
-  }
-})
-
 module.exports = ({
-  query: rootQuery,
-  mutation
+  query: rootQuery
 })
