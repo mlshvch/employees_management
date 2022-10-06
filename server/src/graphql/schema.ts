@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 import { signUpMutation } from './mutations/sign_up'
+import { signInMutation } from './mutations/sign_in'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -19,7 +20,8 @@ const rootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    signUp: signUpMutation
+    signUp: signUpMutation,
+    signIn: signInMutation
   }
 })
 
