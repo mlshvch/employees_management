@@ -2,14 +2,14 @@ import { GraphQLString, GraphQLError } from 'graphql'
 import * as bcrypt from 'bcrypt'
 import { PrismaClient, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
-import { SignInType } from '../types/sign_in.type';
+import { SignInType } from '../types/sign_in.type'
 
 const client = new PrismaClient()
 
-const generateToken = (user: any, expiry: number) => {
+const generateToken = (user: any, expiry: number): string => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
   if (!secretToken) throw new Error('token is not defined')
-  return jwt.sign({id: Number(user.id), uid: user.uid}, secretToken, {expiresIn: expiry})
+  return jwt.sign({ id: Number(user.id), uid: user.uid }, secretToken, { expiresIn: expiry })
 }
 
 export const signInMutation = {
@@ -26,7 +26,7 @@ export const signInMutation = {
     })
       .then(async (user: User) => {
         return await bcrypt.compare(args.password, user.password)
-          .then( async (result) => {
+          .then(async (result) => {
             if (result) {
               // creates custom expriry for 2 weeks (14 days)
               const expiry: number = Date.now() + 1209600
@@ -42,7 +42,7 @@ export const signInMutation = {
                   tokens: tokenList
                 }
               })
-              return {token: token}
+              return { token }
             } else {
               return new GraphQLError('Bad credentials')
             }
