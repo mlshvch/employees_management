@@ -27,5 +27,5 @@ const rootQuery = new GraphQLObjectType({
 
 module.exports = ({
   query: rootQuery,
-  mutation: mutation
+  mutation
 })
