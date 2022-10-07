@@ -17,7 +17,7 @@ env:
   TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
 jobs:
   # Label of the container job
-  container-job:
+  runner-job:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     # Docker Hub image that `container-job` executes in
