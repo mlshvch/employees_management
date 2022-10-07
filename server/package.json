@@ -11,11 +11,10 @@
     "prestart": "cp .env.development.local .env",
     "pretest": "cp .env.test.local .env & npx prisma migrate reset --force",
     "start": "npx nodemon ./src/app.ts",
-    "test": "npx jest",
-    "pretest": "npx prisma migrate reset --force"
+    "test": "npx jest"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "yarn ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^7.5.0",
