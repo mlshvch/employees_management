@@ -3,10 +3,10 @@ import { User, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export function createRandomUserData (): any {
+export function createRandomUserData (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): any {
   return {
-    uid: faker.internet.email(),
-    password: faker.random.alphaNumeric(10),
+    uid,
+    password,
     tokens: JSON.parse('{}'),
     created_at: new Date()
   }
@@ -17,8 +17,8 @@ export function createRandomUsersData (number: number = 1): Array<{ uid: string,
   return new Array(number).fill(true).map(() => { return createRandomUserData() })
 }
 
-export const createRandomUser = async (): Promise<User> => {
-  return await prisma.user.create({ data: createRandomUserData() })
+export const createRandomUser = async (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): Promise<User> => {
+  return await prisma.user.create({ data: createRandomUserData(uid, password) })
 }
 
 export const createRandomUsers = async (number: number = 1): Promise<{ count: number }> => {
