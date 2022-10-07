@@ -1,4 +1,4 @@
-import { createRandomUser } from './factories/user.factory'
+import { createRandomUserData } from './factories/user.factory'
 import request = require('supertest')
 import { User } from '@prisma/client'
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -11,7 +11,7 @@ afterAll(() => {
 
 describe('GraphQL API', () => {
   it('Log the message if token provided', async () => {
-    const userData: User = createRandomUser()
+    const userData: User = createRandomUserData()
     const auth = await request(app).post('/graphql/auth')
       .send({
         query: `mutation { 
