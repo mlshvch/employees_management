@@ -45,3 +45,9 @@ jobs:
       run: yarn
     - name: Run tests
       run: yarn test
+    - name: Connect to PostgreSQL
+      env:
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: postgres
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
