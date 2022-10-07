@@ -11,13 +11,24 @@ datasource db {
 }
 
 model User {
-  id         BigInt   @id @default(autoincrement())
-  uid        String   @unique
+  id         BigInt       @id @default(autoincrement())
+  uid        String       @unique
   password   String
   tokens     Json
-  created_at DateTime @default(now())
+  created_at DateTime     @default(now())
+  Department Department[]
 
   @@index([id], type: Hash)
   @@index([uid], type: Hash)
   @@index([tokens], type: Hash)
+}
+
+model Department {
+  id        BigInt @id @default(autoincrement())
+  name      String @unique
+  manager   User   @relation(fields: [managerId], references: [id])
+  managerId BigInt
+
+  @@index([id], type: Hash)
+  @@index([managerId], type: Hash)
 }
