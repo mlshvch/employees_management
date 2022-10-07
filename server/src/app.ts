@@ -11,7 +11,7 @@ import dotenv = require('dotenv')
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT ?? 4000
+const port = process.env.NODE_ENV === 'test' ? 0 : (process.env.PORT ?? 4000)
 const schema: GraphQLSchema = new GraphQLSchema(schemaParams)
 const authSchema: GraphQLSchema = new GraphQLSchema(authSchemaParams)
 app.use(passport.initialize())
