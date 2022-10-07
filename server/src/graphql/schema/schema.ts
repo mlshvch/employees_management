@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 import { signOutMutation } from '../mutations/sign_out'
+import { departmentsQuery } from '../queries/departments'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -12,7 +13,8 @@ const rootQuery = new GraphQLObjectType({
       resolve (parent, args) {
         return 'Hello, World!'
       }
-    }
+    },
+    department: departmentsQuery
   }
 })
 
