@@ -24,10 +24,12 @@ model User {
 }
 
 model Department {
-  id        BigInt @id @default(autoincrement())
-  name      String @unique
-  manager   User   @relation(fields: [managerId], references: [id])
-  managerId BigInt
+  id          BigInt   @id @default(autoincrement())
+  name        String   @unique
+  manager     User     @relation(fields: [managerId], references: [id])
+  managerId   BigInt
+  description String
+  createdAt   DateTime @default(now())
 
   @@index([id], type: Hash)
   @@index([managerId], type: Hash)

@@ -3,6 +3,8 @@ CREATE TABLE "Department" (
     "id" BIGSERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "managerId" BIGINT NOT NULL,
+    "description" TEXT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
 );
