@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { User, PrismaClient } from '@prisma/client'
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
@@ -20,12 +20,13 @@ export function createRandomUsersData (number: number = 1): Array<{ uid: string,
 
 export const createRandomUser = async (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): Promise<User> => {
   const user = createRandomUserData(uid, password)
-  return await prisma.user.create({ data: {
+  return await prisma.user.create({
+    data: {
       uid: user.uid,
       password: await bcrypt.hash(user.password, 10),
       tokens: user.tokens
     }
-  }) 
+  })
 }
 
 export const createRandomUsers = async (number: number = 1): Promise<{ count: number }> => {
