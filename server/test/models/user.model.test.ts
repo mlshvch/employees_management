@@ -12,19 +12,20 @@ describe('user model', () => {
 
   it('saves to the database if all data correct', async () => {
     userData.id = faker.datatype.bigInt()
-    const createdUser = await prisma.user.create({ data: userData })
-    expect(await prisma.user.findFirst()).toEqual(createdUser)
+    await prisma.user.create({ data: userData })
+    expect(await prisma.user.findFirst({ where: { uid: userData.uid } })).toBeTruthy()
   })
 
   it('save if id is not passed', async () => {
-    const createdUser = await prisma.user.create({ data: userData })
+    await prisma.user.create({ data: userData })
     const selectedUser = await prisma.user.findFirstOrThrow({
       where: {
         uid: userData.uid
       }
     })
+    expect(selectedUser).toBeTruthy()
     expect(selectedUser).toHaveProperty('id')
-    expect(selectedUser).toEqual(createdUser)
+    expect(selectedUser.id).toBeTruthy()
   })
 
   it('save if created_at is not passed', async () => {

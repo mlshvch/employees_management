@@ -79,7 +79,7 @@ describe('Create Department', () => {
     const dep = await createRandomDepartmentData()
 
     const userIds = await prisma.user.findMany({ select: { id: true } })
-    const invalidUserId = Number(userIds[userIds.length - 1].id) + Math.random() * 1_000_000
+    const invalidUserId = Number(userIds[userIds.length - 1].id) + Math.round(Math.random() * 1_000_000)
 
     const res = await request(app).post(url)
       .set({ authorization: `Bearer ${token}` })
