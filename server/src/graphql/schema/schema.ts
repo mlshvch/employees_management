@@ -3,6 +3,7 @@ import { signOutMutation } from '../mutations/sign_out'
 import { departmentsQuery } from '../queries/departments'
 import { createDepartmentMutation } from '../mutations/create_department'
 import { updateDepartmentMutation } from '../mutations/update_department'
+import { deleteDepartmentMutation } from '../mutations/delete_department'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -25,7 +26,8 @@ const mutation = new GraphQLObjectType({
   fields: {
     signOut: signOutMutation,
     createDepartment: createDepartmentMutation,
-    updateDepartment: updateDepartmentMutation
+    updateDepartment: updateDepartmentMutation,
+    deleteDepartment: deleteDepartmentMutation
   }
 })
 
