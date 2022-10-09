@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { createRandomUser } from '../factories/user.factory'
+import { createRandomUserData } from '../factories/user.factory'
 import { faker } from '@faker-js/faker'
 
 describe('user model', () => {
@@ -7,24 +7,25 @@ describe('user model', () => {
   let userData: any
 
   beforeEach(() => {
-    userData = createRandomUser()
+    userData = createRandomUserData()
   })
 
   it('saves to the database if all data correct', async () => {
-    const createdUser = await prisma.user.create({ data: userData })
-    expect(await prisma.user.findFirst()).toEqual(createdUser)
+    userData.id = faker.datatype.bigInt()
+    await prisma.user.create({ data: userData })
+    expect(await prisma.user.findFirst({ where: { uid: userData.uid } })).toBeTruthy()
   })
 
   it('save if id is not passed', async () => {
-    delete userData.id
-    const createdUser = await prisma.user.create({ data: userData })
+    await prisma.user.create({ data: userData })
     const selectedUser = await prisma.user.findFirstOrThrow({
       where: {
         uid: userData.uid
       }
     })
+    expect(selectedUser).toBeTruthy()
     expect(selectedUser).toHaveProperty('id')
-    expect(selectedUser).toEqual(createdUser)
+    expect(selectedUser.id).toBeTruthy()
   })
 
   it('save if created_at is not passed', async () => {
@@ -32,7 +33,7 @@ describe('user model', () => {
     const createdUser = await prisma.user.create({ data: userData })
     const selectedUser = await prisma.user.findFirstOrThrow({
       where: {
-        id: userData.id
+        uid: userData.uid
       }
     })
     expect(selectedUser).toHaveProperty('created_at')

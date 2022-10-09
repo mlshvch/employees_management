@@ -1,5 +1,5 @@
 import request = require('supertest')
-import { createRandomUser } from '../factories/user.factory'
+import { createRandomUserData } from '../factories/user.factory'
 import { faker } from '@faker-js/faker'
 import bcrypt from 'bcrypt'
 import { PrismaClient, User } from '@prisma/client'
@@ -12,7 +12,7 @@ afterAll(() => {
 })
 
 const prisma = new PrismaClient()
-const userData: User = createRandomUser()
+const userData: User = createRandomUserData()
 const endpoint: string = '/graphql/auth'
 
 describe('Sign_up Mutation', () => {

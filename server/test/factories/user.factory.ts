@@ -1,16 +1,43 @@
 import { faker } from '@faker-js/faker'
+import { User, PrismaClient } from '@prisma/client'
+import * as bcrypt from 'bcrypt'
 
-export function createRandomUser (): any {
+const prisma = new PrismaClient()
+
+export function createRandomUserData (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): any {
   return {
-    id: faker.datatype.bigInt(),
-    uid: faker.internet.email(),
-    password: faker.random.alphaNumeric(10),
+    uid,
+    password,
     tokens: JSON.parse('{}'),
     created_at: new Date()
   }
 }
 
-export function createRandomUsers (number: number = 1): object[] {
+export function createRandomUsersData (number: number = 1): Array<{ uid: string, password: string, tokens: {} }> {
   if (number < 1) throw new Error(`Negative value or zero passed\nvalue: ${number}`)
-  return new Array(number).fill(createRandomUser)
+  return new Array(number).fill(true).map(() => { return createRandomUserData() })
+}
+
+export const createNonExistingUser = async (): Promise<User> => {
+  const userIds = await prisma.user.findMany({ select: { id: true } })
+  const invalidUser = createRandomUserData()
+  invalidUser.id = Number(userIds[userIds.length - 1].id) + Math.round(Math.random() * 1_000_000)
+  return invalidUser
+}
+
+export const createRandomUser = async (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): Promise<User> => {
+  const user = createRandomUserData(uid, password)
+  return await prisma.user.create({
+    data: {
+      uid: user.uid,
+      password: await bcrypt.hash(user.password, 10),
+      tokens: user.tokens
+    }
+  })
+}
+
+export const createRandomUsers = async (number: number = 1): Promise<{ count: number }> => {
+  return await prisma.user.createMany({
+    data: createRandomUsersData(number)
+  })
 }

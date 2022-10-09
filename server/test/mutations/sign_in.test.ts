@@ -1,5 +1,5 @@
 import request = require('supertest')
-import { createRandomUser } from '../factories/user.factory'
+import { createRandomUserData } from '../factories/user.factory'
 import bcrypt from 'bcrypt'
 import { PrismaClient, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
@@ -8,7 +8,7 @@ const app = require('../../src/app')
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 const prisma = new PrismaClient()
-const userData: User = createRandomUser()
+const userData: User = createRandomUserData()
 const endpoint: string = '/graphql/auth'
 let createdUser: User
 afterAll(() => {
