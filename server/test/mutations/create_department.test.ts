@@ -1,10 +1,11 @@
 import request from 'supertest'
-/* eslint-enable @typescript-eslint/no-var-requires */
 import { signInUser } from '../factories/sign_in_user'
 import { createRandomDepartmentData } from '../factories/department.factory'
 import { PrismaClient } from '@prisma/client'
+import { createNonExistingUser } from '../factories/user.factory'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
+/* eslint-enable @typescript-eslint/no-var-requires */
 const url = '/graphql'
 
 let token: string
@@ -78,8 +79,7 @@ describe('Create Department', () => {
   it('throws error if invalid managerId is passed', async () => {
     const dep = await createRandomDepartmentData()
 
-    const userIds = await prisma.user.findMany({ select: { id: true } })
-    const invalidUserId = Number(userIds[userIds.length - 1].id) + Math.round(Math.random() * 1_000_000)
+    const invalidUserId = (await createNonExistingUser()).id
 
     const res = await request(app).post(url)
       .set({ authorization: `Bearer ${token}` })
