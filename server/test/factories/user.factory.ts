@@ -18,6 +18,13 @@ export function createRandomUsersData (number: number = 1): Array<{ uid: string,
   return new Array(number).fill(true).map(() => { return createRandomUserData() })
 }
 
+export const createNonExistingUser = async (): Promise<User> => {
+  const userIds = await prisma.user.findMany({ select: { id: true } })
+  const invalidUser = createRandomUserData()
+  invalidUser.id = Number(userIds[userIds.length - 1].id) + Math.round(Math.random() * 1_000_000)
+  return invalidUser
+}
+
 export const createRandomUser = async (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): Promise<User> => {
   const user = createRandomUserData(uid, password)
   return await prisma.user.create({

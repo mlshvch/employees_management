@@ -16,10 +16,15 @@ export const createRandomDepartmentData = async (managerId: number = 0): Promise
 }
 
 export const createRandomDepartment = async (managerId: number | bigint = 0, name: string = faker.name.jobArea(), description: string = faker.lorem.sentence()): Promise<Department> => {
+  const departmentNames: Array<{ name: string }> = await prisma.department.findMany({ select: { name: true } })
+  do {
+    name = faker.random.word()
+  } while (departmentNames.includes({ name }))
+
   return await prisma.department.create({
     data: {
       name,
-      managerId,
+      managerId: managerId === 0 ? (await selectRandomUser()).id : managerId,
       description
     }
   })
