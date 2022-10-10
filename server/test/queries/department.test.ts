@@ -34,7 +34,7 @@ describe('department queries', () => {
       .set({ authorization: `Bearer ${token}` })
       .send({ query: '{ department { id, name, managerId, description, createdAt } }' })
 
-    expect((res.body.data.department)).toEqual((await prisma.department.findMany()).map((value) => parseJSONBigIntToNumber(value) ))
+    expect((res.body.data.department)).toEqual((await prisma.department.findMany()).map((value) => parseJSONBigIntToNumber(value)))
   })
 
   it('returns unauthorized code is user is unauthenticated', async () => {

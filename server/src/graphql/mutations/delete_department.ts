@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLError } from 'graphql'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
-import { PrismaClient, Department } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { DepartmentType } from '../types/department.type'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 export const deleteDepartmentMutation = {

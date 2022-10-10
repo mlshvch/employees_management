@@ -23,3 +23,10 @@ export const createInvalidPositionData = async (): Promise<{ id?: bigint | numbe
 
   return createRandomPositionData(faker.name.jobTitle(), invalidId)
 }
+
+export const selectRandomPosition = async (): Promise<Position> => {
+  return await prisma.position.findMany()
+    .then((positions: Position[]) => {
+      return positions[Math.floor(Math.random() * (positions.length - 1))]
+    })
+}
