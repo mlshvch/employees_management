@@ -8,7 +8,7 @@ export const deleteDepartmentMutation = {
   args: {
     id: { type: new GraphQLNonNull(GraphQLBigInt) }
   },
-  async resolve (_parent: any, args: { id: bigint | number }): Promise<Department | GraphQLError> {
+  async resolve (_parent: any, args: { id: bigint | number }): Promise<object | GraphQLError> {
     const prisma = new PrismaClient()
     if ((await prisma.department.findFirst({ where: { id: args.id } })) == null) return new GraphQLError("department with this id doesn't exist")
 
