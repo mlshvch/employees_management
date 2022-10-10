@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLError } from 'graphql'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
 import { PrismaClient, Department } from '@prisma/client'
 import { DepartmentType } from '../types/department.type'
+import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 export const deleteDepartmentMutation = {
   type: DepartmentType,
   args: {
@@ -12,7 +13,7 @@ export const deleteDepartmentMutation = {
     if ((await prisma.department.findFirst({ where: { id: args.id } })) == null) return new GraphQLError("department with this id doesn't exist")
 
     return await prisma.department.delete({ where: { id: args.id } })
-      .then((result) => { return JSON.parse(JSON.stringify(result, (_, v) => typeof v === 'bigint' ? Number(v) : v)) })
+      .then((result) => parseJSONBigIntToNumber(result))
       .catch((err) => {
         return new GraphQLError(err.message)
       })

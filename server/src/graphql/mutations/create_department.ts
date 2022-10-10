@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLError } from 'graphql'
 import { PrismaClient } from '@prisma/client'
 import { DepartmentType } from '../types/department.type'
+import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 
 const prisma = new PrismaClient()
 
@@ -15,7 +16,7 @@ export const createDepartmentMutation = {
     return await prisma.department.create({ data: args })
       .then((user) => {
         if (!args.name) throw new Error('name is not passed')
-        return JSON.parse(JSON.stringify(user, (_, v) => typeof v === 'bigint' ? Number(v) : v))
+        return parseJSONBigIntToNumber(user)
       })
       .catch((err) => {
         return new GraphQLError((err.message.split('description:')[1]))
