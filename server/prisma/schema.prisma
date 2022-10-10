@@ -17,6 +17,7 @@ model User {
   tokens     Json
   created_at DateTime     @default(now())
   Department Department[]
+  Employee   Employee[]
 
   @@index([id], type: Hash)
   @@index([uid], type: Hash)
@@ -24,12 +25,13 @@ model User {
 }
 
 model Department {
-  id          BigInt   @id @default(autoincrement())
-  name        String   @unique
-  manager     User     @relation(fields: [managerId], references: [id])
+  id          BigInt     @id @default(autoincrement())
+  name        String     @unique
+  manager     User       @relation(fields: [managerId], references: [id])
   managerId   BigInt
   description String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime   @default(now())
+  Employee    Employee[]
 
   @@index([id], type: Hash)
   @@index([managerId], type: Hash)
@@ -40,4 +42,21 @@ model Position {
   name String @unique
 
   @@index([id, name])
+}
+
+model Employee {
+  id           BigInt     @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       BigInt
+  name         String
+  surname      String
+  position     String
+  staffMember  Boolean    @default(true)
+  department   Department @relation(fields: [departmentId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  departmentId BigInt
+
+  @@index([id], type: Hash)
+  @@index([userId], type: Hash)
+  @@index([name, surname])
+  @@index([departmentId])
 }
