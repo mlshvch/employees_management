@@ -38,8 +38,9 @@ model Department {
 }
 
 model Position {
-  id   BigInt @id @default(autoincrement())
-  name String @unique
+  id       BigInt     @id @default(autoincrement())
+  name     String     @unique
+  Employee Employee[]
 
   @@index([id, name])
 }
@@ -50,7 +51,8 @@ model Employee {
   userId       BigInt
   name         String
   surname      String
-  position     String
+  positionId   BigInt
+  position     Position   @relation(fields: [positionId], references: [id])
   staffMember  Boolean    @default(true)
   department   Department @relation(fields: [departmentId], references: [id], onUpdate: Cascade, onDelete: Restrict)
   departmentId BigInt
