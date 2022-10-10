@@ -2,6 +2,7 @@ import { GraphQLString, GraphQLNonNull, GraphQLError } from 'graphql'
 import { DepartmentType } from '../types/department.type'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
 import { PrismaClient } from '@prisma/client'
+import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 
 export const updateDepartmentMutation = {
   type: DepartmentType,
@@ -23,7 +24,7 @@ export const updateDepartmentMutation = {
       data: args
     })
       .then((value) => {
-        return JSON.parse(JSON.stringify(value, (_, v) => typeof v === 'bigint' ? Number(v) : v))
+        return parseJSONBigIntToNumber(value)
       })
       .catch((err) => {
         return new GraphQLError((err.message.split('description:')[1]))

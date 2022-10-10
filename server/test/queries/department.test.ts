@@ -1,6 +1,8 @@
 import request from 'supertest'
 import { createRandomUser, createRandomUserData } from '../factories/user.factory'
 import { User, PrismaClient } from '@prisma/client'
+import { parseJSONBigIntToNumber } from '../../helpers/parse_bigint'
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -32,7 +34,7 @@ describe('department queries', () => {
       .set({ authorization: `Bearer ${token}` })
       .send({ query: '{ department { id, name, managerId, description, createdAt } }' })
 
-    expect((res.body.data.department)).toEqual((await prisma.department.findMany()).map((value) => JSON.parse(JSON.stringify(value, (_, v) => typeof v === 'bigint' ? Number(v) : v))))
+    expect((res.body.data.department)).toEqual((await prisma.department.findMany()).map((value) => parseJSONBigIntToNumber(value)))
   })
 
   it('returns unauthorized code is user is unauthenticated', async () => {

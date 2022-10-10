@@ -34,3 +34,10 @@ model Department {
   @@index([id], type: Hash)
   @@index([managerId], type: Hash)
 }
+
+model Position {
+  id   BigInt @id @default(autoincrement())
+  name String @unique
+
+  @@index([id, name])
+}
