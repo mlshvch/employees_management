@@ -28,7 +28,7 @@ export const createRandomEmployeeData = async (args?: { userId?: bigint, name?: 
   const randomUserId = uniqueUsers[Math.floor(Math.random() * (uniqueUsers.length - 1))]
   return {
     id: undefined,
-    userId: args?.userId ?? uniqueUsers.length === 0 ? (await createRandomUser()).id : randomUserId,
+    userId: args?.userId ?? (uniqueUsers.length === 0 ? (await createRandomUser()).id : randomUserId),
     name: args?.name ?? faker.name.firstName(),
     surname: args?.surname ?? faker.name.lastName(),
     positionId: args?.positionId ?? (await selectRandomPosition()).id,
