@@ -1,8 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { User, PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
+import { User } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
-
-const prisma = new PrismaClient()
 
 export function createRandomUserData (uid: string = faker.internet.email(), password: string = faker.random.alphaNumeric(10)): any {
   return {

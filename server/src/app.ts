@@ -6,7 +6,7 @@ import { graphqlHTTP } from 'express-graphql'
 import schemaParams = require('./graphql/schema/schema')
 import authSchemaParams = require('./graphql/schema/auth.schema')
 import { GraphQLSchema } from 'graphql'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../db'
 import dotenv = require('dotenv')
 dotenv.config()
 
@@ -21,7 +21,6 @@ const bearer = new BearerStrategy(async (token: string, done) => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
   if (!secretToken) throw new Error('token is not defined')
 
-  const prisma = new PrismaClient()
   if (jwt.verify(token, secretToken)) {
     const data = jwt.decode(token, { json: true })
     if (data?.exp) {

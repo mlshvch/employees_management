@@ -1,10 +1,9 @@
 import { faker } from '@faker-js/faker'
-import { Employee, PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
+import { Employee } from '@prisma/client'
 import { createNonExistingUser, createRandomUser } from './user.factory'
 import { selectRandomPosition, createInvalidPositionData } from './position.factory'
 import { selectRandomDepartment, createNonExistingDepartment } from './department.factory'
-
-const prisma = new PrismaClient()
 
 export interface EmployeeType {
   id: undefined

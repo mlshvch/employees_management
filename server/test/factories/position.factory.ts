@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { Position, PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { Position } from '@prisma/client'
+import { prisma } from '../../db'
 
 export const createRandomPositionData = (name: string = faker.name.jobTitle(), id?: bigint | number): { id?: bigint | number, name: string } => {
   return { id, name }

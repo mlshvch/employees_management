@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { createRandomUser, createRandomUserData } from '../factories/user.factory'
-import { User, PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
+import { User } from '@prisma/client'
 import { parseJSONBigIntToNumber } from '../../helpers/parse_bigint'
 
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -14,7 +15,6 @@ afterAll(() => {
 let token: string
 const url = '/graphql'
 const authUrl = '/graphql/auth'
-const prisma = new PrismaClient()
 
 beforeAll(async () => {
   const user: User = await createRandomUserData()

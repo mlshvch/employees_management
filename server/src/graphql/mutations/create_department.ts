@@ -1,9 +1,7 @@
 import { GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLError } from 'graphql'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../db'
 import { DepartmentType } from '../types/department.type'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
-
-const prisma = new PrismaClient()
 
 export const createDepartmentMutation = {
   type: DepartmentType,

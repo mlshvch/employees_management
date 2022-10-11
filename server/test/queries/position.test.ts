@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { signInUser } from '../factories/sign_in_user'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
 import { parseJSONBigIntToNumber } from '../../helpers/parse_bigint'
 import { selectRandomPosition, createInvalidPositionData } from '../factories/position.factory'
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -13,7 +13,6 @@ afterAll(() => {
 
 const url: string = '/graphql'
 let token: string
-const prisma = new PrismaClient()
 
 beforeAll(async () => {
   token = await signInUser()

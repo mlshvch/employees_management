@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
 import { createRandomUserData } from '../factories/user.factory'
 import { faker } from '@faker-js/faker'
 
 describe('user model', () => {
-  const prisma = new PrismaClient()
   let userData: any
 
   beforeEach(() => {
