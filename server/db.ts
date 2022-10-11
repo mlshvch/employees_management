@@ -6,4 +6,4 @@ declare global {
 
 // link to explanation of this silution
 // https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
-export const prisma = new PrismaClient
+export const prisma = new PrismaClient()
