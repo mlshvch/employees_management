@@ -1,10 +1,10 @@
-import { GraphQLBoolean, GraphQLString, GraphQLError } from 'graphql'
+import { GraphQLBoolean, GraphQLString, GraphQLError, GraphQLList } from 'graphql'
 import { EmployeeType } from '../types/employee.type'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
 import { PrismaClient, Employee } from '@prisma/client'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 export const employeeQuery = {
-  type: EmployeeType,
+  type: new GraphQLList(EmployeeType),
   args: {
     id: { type: GraphQLBigInt },
     userId: { type: GraphQLBigInt },
@@ -28,7 +28,7 @@ export const employeeQuery = {
         departmentId: args.departmentId
       }
     })
-      .then((result: Employee[]) => result.map((employee: Employee) => parseJSONBigIntToNumber(result)))
+      .then((result: Employee[]) => result.map((employee: Employee) => parseJSONBigIntToNumber(employee)))
       .catch((err: Error) => new GraphQLError(err.message))
   }
 }

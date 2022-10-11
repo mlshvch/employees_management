@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLBoolean } from 'graphql'
 import { GraphQLBigInt } from './scalar/bigint.type'
 export const EmployeeType = new GraphQLObjectType({
-  name: 'Type',
+  name: 'Employee',
   fields: {
     id: { type: new GraphQLNonNull(GraphQLBigInt) },
     userId: { type: new GraphQLNonNull(GraphQLBigInt) },
