@@ -41,3 +41,15 @@ export const createRandomUsers = async (number: number = 1): Promise<{ count: nu
     data: createRandomUsersData(number)
   })
 }
+
+export const selectRandomUser = async (): Promise<User> => {
+  return await prisma.user.findMany()
+    .then((users: User[]) => {
+      if (users.length === 0) throw new Error('There are no users created. Creating the valid one')
+      return users[Math.floor(Math.random() * (users.length - 1))]
+    })
+    .catch(async (err: Error) => {
+      console.log(err.message)
+      return await createRandomUser()
+    })
+}

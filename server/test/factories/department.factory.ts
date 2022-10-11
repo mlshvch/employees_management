@@ -36,3 +36,15 @@ export const createRandomDepartment = async (managerId: number | bigint = 0, nam
     }
   })
 }
+
+export const selectRandomDepartment = async (): Promise<Department> => {
+  return await prisma.department.findMany()
+    .then((departments: Department[]) => {
+      if (departments.length === 0) throw new Error('There are no departments created. Creating the valid one')
+      return departments[Math.floor(Math.random() * (departments.length - 1))]
+    })
+    .catch(async (err: Error) => {
+      console.log(err.message)
+      return await createRandomDepartment()
+    })
+}
