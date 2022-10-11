@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../db'
 import { GraphQLList } from 'graphql'
 import { DepartmentType } from '../types/department.type'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
-const prisma = new PrismaClient()
 
 export const departmentsQuery = {
   type: new GraphQLList(DepartmentType),

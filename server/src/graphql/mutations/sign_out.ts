@@ -1,6 +1,6 @@
 import { GraphQLBoolean } from 'graphql'
 import jwt from 'jsonwebtoken'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../db'
 
 export const signOutMutation = {
   type: GraphQLBoolean,
@@ -9,7 +9,6 @@ export const signOutMutation = {
     const token = context.headers.authorization.split(' ')[1]
     const tokenId: string = token.split('.')[2]
     const userData = jwt.decode(token, { json: true })
-    const prisma = new PrismaClient()
     const user = await prisma.user.findFirst({
       where: {
         uid: userData?.uid

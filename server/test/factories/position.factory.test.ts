@@ -1,7 +1,7 @@
 import { createRandomPositionData, createRandomPosition, createInvalidPositionData } from './position.factory'
 import { faker } from '@faker-js/faker'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../db'
+
 describe('position factories', () => {
   describe('createRandomPositionData', () => {
     it('creates object of position type', () => {

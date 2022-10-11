@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { Department, PrismaClient, User } from '@prisma/client'
+import { Department, User } from '@prisma/client'
 import { createRandomUser } from './user.factory'
-const prisma = new PrismaClient()
+import { prisma } from '../../db'
 
 const selectRandomUser = async (): Promise<User> => {
   return await prisma.user.findMany().then(async (users: User[]): Promise<User> => { return users.length > 0 ? users[Math.floor(Math.random() * users.length)] : await createRandomUser() })

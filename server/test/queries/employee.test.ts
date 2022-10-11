@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { signInUser } from '../factories/sign_in_user'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
 import { parseJSONBigIntToNumber } from '../../helpers/parse_bigint'
 import { selectRandomEmployee, createEmployeeDataWithInvalidUserId, EmployeeType } from '../factories/employee.factory'
 
@@ -12,7 +12,6 @@ afterAll(() => { app.close() })
 
 let token: string
 const url = '/graphql'
-const prisma = new PrismaClient()
 
 beforeEach(async () => { token = await signInUser() })
 
