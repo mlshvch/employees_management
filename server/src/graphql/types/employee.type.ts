@@ -7,7 +7,7 @@ export const EmployeeType = new GraphQLObjectType({
     userId: { type: new GraphQLNonNull(GraphQLBigInt) },
     name: { type: new GraphQLNonNull(GraphQLString) },
     surname: { type: new GraphQLNonNull(GraphQLString) },
-    position: { type: new GraphQLNonNull(GraphQLBigInt) },
+    positionId: { type: new GraphQLNonNull(GraphQLBigInt) },
     staffMember: { type: new GraphQLNonNull(GraphQLBoolean) },
     departmentId: { type: new GraphQLNonNull(GraphQLBigInt) }
   }

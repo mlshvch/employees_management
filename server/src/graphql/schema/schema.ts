@@ -8,6 +8,7 @@ import { positionQuery } from '../queries/positions'
 import { createPositionMutation } from '../mutations/create_position'
 import { updatePositionMutation } from '../mutations/update_position'
 import { deletePositionMutation } from '../mutations/delete_position'
+import { employeeQuery } from '../queries/employees'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -22,7 +23,8 @@ const rootQuery = new GraphQLObjectType({
       }
     },
     department: departmentsQuery,
-    position: positionQuery
+    position: positionQuery,
+    employee: employeeQuery
   }
 })
 
