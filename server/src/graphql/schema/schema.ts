@@ -10,6 +10,7 @@ import { updatePositionMutation } from '../mutations/update_position'
 import { deletePositionMutation } from '../mutations/delete_position'
 import { employeeQuery } from '../queries/employees'
 import { createEmployeeMutation } from '../mutations/create_employee'
+import { updateEmployeeMutation } from '../mutations/update_employee'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -39,7 +40,8 @@ const mutation = new GraphQLObjectType({
     createPosition: createPositionMutation,
     updatePosition: updatePositionMutation,
     deletePosition: deletePositionMutation,
-    createEmployee: createEmployeeMutation
+    createEmployee: createEmployeeMutation,
+    updateEmployee: updateEmployeeMutation
   }
 })
 
