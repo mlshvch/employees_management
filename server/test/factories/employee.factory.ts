@@ -6,7 +6,7 @@ import { selectRandomPosition, createInvalidPositionData } from './position.fact
 import { selectRandomDepartment, createNonExistingDepartment } from './department.factory'
 
 export interface EmployeeType {
-  id: undefined
+  id: undefined | bigint | number
   userId: bigint
   name: string
   surname: string
@@ -15,7 +15,7 @@ export interface EmployeeType {
   departmentId: bigint
 }
 
-export const createRandomEmployeeData = async (args?: { userId?: bigint, name?: string, surname?: string, positionId?: bigint | number, staffMemeber?: boolean, departmentId?: bigint }): Promise<EmployeeType> => {
+export const createRandomEmployeeData = async (args?: { id?: bigint | number, userId?: bigint, name?: string, surname?: string, positionId?: bigint | number, staffMemeber?: boolean, departmentId?: bigint }): Promise<EmployeeType> => {
   const uniqueUsers: bigint[] = (await prisma.$queryRaw<Array<{ id: bigint }>>`
   SELECT "usr".id
   FROM "User" as usr
@@ -39,6 +39,14 @@ export const createRandomEmployeeData = async (args?: { userId?: bigint, name?: 
 
 export const createRandomEmployee = async (args?: EmployeeType): Promise<Employee> => {
   return await prisma.employee.create({ data: await createRandomEmployeeData(args) })
+}
+
+export const createInvalidEmployee = async (): Promise<EmployeeType> => {
+  const lastEmployeeId: bigint | number = await prisma.employee.findMany({ select: { id: true } })
+    .then((idList: Array<{ id: bigint | number }>) => (idList[idList.length - 1]).id)
+  return await createRandomEmployeeData({
+    id: Number(lastEmployeeId) + Math.floor(Math.random() * 1_000_000)
+  })
 }
 
 export const createEmployeeDataWithInvalidUserId = async (): Promise<EmployeeType> => {
