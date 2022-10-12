@@ -1,8 +1,6 @@
 import { createRandomUserData, createRandomUsersData, createRandomUser, createRandomUsers } from './user.factory'
 import { User } from '../../src/models/user.model'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '../../db'
 
 describe('createRandomUserData', () => {
   it('returns user', () => {

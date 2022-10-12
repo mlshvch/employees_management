@@ -8,6 +8,10 @@ import { positionQuery } from '../queries/positions'
 import { createPositionMutation } from '../mutations/create_position'
 import { updatePositionMutation } from '../mutations/update_position'
 import { deletePositionMutation } from '../mutations/delete_position'
+import { employeeQuery } from '../queries/employees'
+import { createEmployeeMutation } from '../mutations/create_employee'
+import { updateEmployeeMutation } from '../mutations/update_employee'
+import { deleteEmployeeMutation } from '../mutations/delete_employee'
 
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -22,7 +26,8 @@ const rootQuery = new GraphQLObjectType({
       }
     },
     department: departmentsQuery,
-    position: positionQuery
+    position: positionQuery,
+    employee: employeeQuery
   }
 })
 
@@ -35,7 +40,10 @@ const mutation = new GraphQLObjectType({
     deleteDepartment: deleteDepartmentMutation,
     createPosition: createPositionMutation,
     updatePosition: updatePositionMutation,
-    deletePosition: deletePositionMutation
+    deletePosition: deletePositionMutation,
+    createEmployee: createEmployeeMutation,
+    updateEmployee: updateEmployeeMutation,
+    deleteEmployee: deleteEmployeeMutation
   }
 })
 

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { Department, PrismaClient, User } from '@prisma/client'
+import { Department, User } from '@prisma/client'
 import { createRandomUser } from './user.factory'
-const prisma = new PrismaClient()
+import { prisma } from '../../db'
 
 const selectRandomUser = async (): Promise<User> => {
   return await prisma.user.findMany().then(async (users: User[]): Promise<User> => { return users.length > 0 ? users[Math.floor(Math.random() * users.length)] : await createRandomUser() })
@@ -35,4 +35,16 @@ export const createRandomDepartment = async (managerId: number | bigint = 0, nam
       description
     }
   })
+}
+
+export const selectRandomDepartment = async (): Promise<Department> => {
+  return await prisma.department.findMany()
+    .then((departments: Department[]) => {
+      if (departments.length === 0) throw new Error('There are no departments created. Creating the valid one')
+      return departments[Math.floor(Math.random() * (departments.length - 1))]
+    })
+    .catch(async (err: Error) => {
+      console.log(err.message)
+      return await createRandomDepartment()
+    })
 }

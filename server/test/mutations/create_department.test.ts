@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { signInUser } from '../factories/sign_in_user'
 import { createRandomDepartmentData } from '../factories/department.factory'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../db'
 import { createNonExistingUser } from '../factories/user.factory'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
@@ -9,8 +9,6 @@ const app = require('../../src/app')
 const url = '/graphql'
 
 let token: string
-
-const prisma = new PrismaClient()
 
 afterAll(() => {
   app.close()

@@ -2,7 +2,8 @@ import request from 'supertest'
 import { signInUser } from '../factories/sign_in_user'
 import { faker } from '@faker-js/faker'
 import { createRandomDepartment } from '../factories/department.factory'
-import { PrismaClient, Department } from '@prisma/client'
+import { prisma } from '../../db'
+import { Department } from '@prisma/client'
 import { createNonExistingUser } from '../factories/user.factory'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
@@ -15,7 +16,6 @@ afterAll(() => {
 let token: string
 const url: string = '/graphql'
 let department: Department
-const prisma = new PrismaClient()
 
 beforeAll(async () => {
   token = await signInUser()

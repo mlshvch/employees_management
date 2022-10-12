@@ -1,10 +1,9 @@
 import { GraphQLString, GraphQLError } from 'graphql'
 import * as bcrypt from 'bcrypt'
-import { PrismaClient, User } from '@prisma/client'
+import { prisma } from '../../../db'
+import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { SignInType } from '../types/sign_in.type'
-
-const client = new PrismaClient()
 
 const generateToken = (user: any, expiry: number): string => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
@@ -19,7 +18,7 @@ export const signInMutation = {
     password: { type: GraphQLString }
   },
   async resolve (_parent: any, args: any) {
-    return await client.user.findFirstOrThrow({
+    return await prisma.user.findFirstOrThrow({
       where: {
         uid: args.uid
       }
@@ -34,7 +33,7 @@ export const signInMutation = {
               const tokenId: string = token.split('.')[2]
               const tokenList: any = user.tokens
               tokenList[tokenId] = { password: user.password, expiresAt: expiry }
-              await client.user.update({
+              await prisma.user.update({
                 where: {
                   uid: user.uid
                 },

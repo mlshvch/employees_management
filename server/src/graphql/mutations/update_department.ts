@@ -1,7 +1,7 @@
 import { GraphQLString, GraphQLNonNull, GraphQLError } from 'graphql'
 import { DepartmentType } from '../types/department.type'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../db'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 
 export const updateDepartmentMutation = {
@@ -14,7 +14,6 @@ export const updateDepartmentMutation = {
   },
   async resolve (_parent: any, args: { id?: number, name?: string, description?: string, managerId?: number }) {
     if (typeof (args.name) === 'string' && !args.name) throw new Error('name can not be empty')
-    const prisma = new PrismaClient()
     const departmentId = args.id
     delete args.id
     return await prisma.department.update({
