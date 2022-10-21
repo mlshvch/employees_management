@@ -1,0 +1,36 @@
+import path from 'path'
+import pino from 'pino'
+import { prisma } from '../db'
+
+const streams = [
+  { stream: process.stdout },
+  { stream: pino.destination(path.join(__dirname, 'logs/.log')) }
+]
+
+export const logger = pino(
+  {
+    level: process.env.PINO_LOG_LEVEL ?? 'info',
+    formatters: {
+      level: (label) => {
+        return { level: label }
+      }
+    }
+  },
+  pino.multistream(streams)
+)
+
+prisma.$on('query', (e) => {
+  logger.info(`QUERY: ${e.query}\nPARAMS: ${e.params}\nDURATION: ${e.duration} ms`)
+})
+
+prisma.$on('warn', (e) => {
+  logger.warn(e)
+})
+
+prisma.$on('error', (e) => {
+  logger.error(e)
+})
+
+prisma.$on('info', (e) => {
+  logger.info(e)
+})

@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { Express, Request, Response } from 'express'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
@@ -8,6 +8,8 @@ import authSchemaParams = require('./graphql/schema/auth.schema')
 import { GraphQLSchema } from 'graphql'
 import { prisma } from '../db'
 import dotenv = require('dotenv')
+import { logger } from './logger'
+
 dotenv.config()
 
 const app: Express = express()
@@ -51,6 +53,22 @@ const bearer = new BearerStrategy(async (token: string, done) => {
         })
     }
   }
+})
+
+app.use(express.json())
+
+// Error Handler and logger
+app.use((err: Error, req: Request, res: Response, _next: Function) => {
+  if (err) {
+    logger.error(err.message)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+// Logger for requests
+app.use((req: Request, _res: Response, next: Function) => {
+  logger.info(req)
+  next()
 })
 
 app.use('/graphql/auth',
