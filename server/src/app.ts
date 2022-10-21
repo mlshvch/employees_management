@@ -8,7 +8,8 @@ import authSchemaParams = require('./graphql/schema/auth.schema')
 import { GraphQLSchema } from 'graphql'
 import { prisma } from '../db'
 import dotenv = require('dotenv')
-import { logger } from './logger'
+import { logger, logFilePath } from './logger'
+import * as fs from 'fs'
 
 dotenv.config()
 
@@ -59,6 +60,9 @@ app.use(express.json())
 
 // Error Handler and logger
 app.use((err: Error, req: Request, res: Response, _next: Function) => {
+  fs.open(logFilePath, 'a+', (err) => {
+    if (err != null) throw err
+  })
   if (err) {
     logger.error(err.message)
     return res.status(500).json({ message: 'Internal server error' })

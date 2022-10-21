@@ -3,7 +3,7 @@ import pino from 'pino'
 import * as fs from 'fs'
 import { prisma } from '../db'
 
-const logFilePath: string = path.join(__dirname, 'logs/.log')
+export const logFilePath: string = path.join(__dirname, 'logs/.log')
 
 const streams: Array<{ stream: any }> = [
   { stream: process.stdout },
