@@ -1,10 +1,13 @@
 import path from 'path'
 import pino from 'pino'
+import * as fs from 'fs'
 import { prisma } from '../db'
 
-const streams = [
+const logFilePath: string = path.join(__dirname, 'logs/.log')
+
+const streams: Array<{ stream: any }> = [
   { stream: process.stdout },
-  { stream: pino.destination(path.join(__dirname, 'logs/.log')) }
+  { stream: fs.createWriteStream(logFilePath) }
 ]
 
 export const logger = pino(
