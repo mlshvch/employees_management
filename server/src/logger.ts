@@ -2,9 +2,11 @@ import path from 'path'
 import pino from 'pino'
 import * as fs from 'fs'
 import { prisma } from '../db'
-
+import { main as createLogFile } from '../scripts/create_log_file'
 export const logFileDir: string = path.join(process.cwd(), 'logs')
 export const logFilePath: string = path.join(logFileDir, '.log')
+
+createLogFile()
 
 const streams: Array<{ stream: any }> = [
   { stream: process.stdout },
