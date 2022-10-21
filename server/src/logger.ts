@@ -5,10 +5,6 @@ import { prisma } from '../db'
 
 export const logFilePath: string = path.join(process.cwd(), 'logs', '.log')
 
-fs.open(logFilePath, 'a', (err) => {
-  if (err != null) throw err
-})
-
 const streams: Array<{ stream: any }> = [
   { stream: process.stdout },
   { stream: fs.createWriteStream(logFilePath) }
