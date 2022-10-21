@@ -8,8 +8,7 @@ import authSchemaParams = require('./graphql/schema/auth.schema')
 import { GraphQLSchema } from 'graphql'
 import { prisma } from '../db'
 import dotenv = require('dotenv')
-import { logger, logFilePath } from './logger'
-import * as fs from 'fs'
+import { logger } from './logger'
 
 dotenv.config()
 
@@ -24,15 +23,15 @@ const bearer = new BearerStrategy(async (token: string, done) => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
   if (!secretToken) throw new Error('token is not defined')
 
-    const checkTokenExpiration = (expDate: number) => {
-      if (expDate < Date.now()) throw new Error('token is expired')
+  const checkTokenExpiration = (expDate: number): void => {
+    if (expDate < Date.now()) throw new Error('token is expired')
   }
 
   if (jwt.verify(token, secretToken)) {
     const data = jwt.decode(token, { json: true })
     if (data?.exp) {
       try {
-          checkTokenExpiration(data.exp)
+        checkTokenExpiration(data.exp)
       } catch (err) {
         console.log(err)
         return done(null, false)
