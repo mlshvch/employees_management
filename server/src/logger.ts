@@ -3,7 +3,7 @@ import pino from 'pino'
 import * as fs from 'fs'
 import { prisma } from '../db'
 
-export const logFilePath: string = path.join(__dirname, 'logs/.log')
+export const logFilePath: string = path.join(process.cwd(), 'logs', '.log')
 
 fs.open(logFilePath, 'a', (err) => {
   if (err != null) throw err
