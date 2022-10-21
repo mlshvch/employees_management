@@ -24,11 +24,15 @@ const bearer = new BearerStrategy(async (token: string, done) => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
   if (!secretToken) throw new Error('token is not defined')
 
+    const checkTokenExpiration = (expDate: number) => {
+      if (expDate < Date.now()) throw new Error('token is expired')
+  }
+
   if (jwt.verify(token, secretToken)) {
     const data = jwt.decode(token, { json: true })
     if (data?.exp) {
       try {
-        if (data.exp < Date.now()) throw new Error('token is expired')
+          checkTokenExpiration(data.exp)
       } catch (err) {
         console.log(err)
         return done(null, false)
@@ -60,9 +64,6 @@ app.use(express.json())
 
 // Error Handler and logger
 app.use((err: Error, req: Request, res: Response, _next: Function) => {
-  fs.open(logFilePath, 'a+', (err) => {
-    if (err != null) throw err
-  })
   if (err) {
     logger.error(err.message)
     return res.status(500).json({ message: 'Internal server error' })
