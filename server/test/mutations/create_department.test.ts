@@ -74,7 +74,7 @@ describe('Create Department', () => {
       })
       .expect(200)
     expect(res.body).toHaveProperty('errors')
-    expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.blank_name)
+    expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.blankName)
   })
 
   it('throws error if invalid managerId is passed', async () => {
@@ -86,7 +86,7 @@ describe('Create Department', () => {
       .set({ authorization: `Bearer ${token}` })
       .send({
         query: `mutation {
-      createDepartment(name: "", managerId: ${invalidUserId}, description:"${dep.description}") {
+        createDepartment(name: "${dep.name}", managerId: ${invalidUserId}, description:"${dep.description}") {
         id, 
         name, 
         managerId, 
@@ -97,5 +97,6 @@ describe('Create Department', () => {
       })
       .expect(200)
     expect(res.body).toHaveProperty('errors')
+    expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.invalidManager)
   })
 })

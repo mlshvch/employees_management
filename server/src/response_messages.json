@@ -1,7 +1,8 @@
 {
   "department": {
     "error": {
-      "blank_name": "name cannot be blank"
+      "blankName": "name cannot be blank",
+      "invalidManager": "invalid manager id provided"
     }
   }
 }
