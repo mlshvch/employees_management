@@ -1,1 +1,7 @@
-{}
+{
+  "department": {
+    "error": {
+      "blank_name": "name cannot be blank"
+    }
+  }
+}

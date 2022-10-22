@@ -3,12 +3,14 @@ import { signInUser } from '../factories/sign_in_user'
 import { createRandomDepartmentData } from '../factories/department.factory'
 import { prisma } from '../../db'
 import { createNonExistingUser } from '../factories/user.factory'
+import { readResponseMessages } from '../../helpers/read_response_messages'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
 /* eslint-enable @typescript-eslint/no-var-requires */
 const url = '/graphql'
 
 let token: string
+const responseMessages = readResponseMessages()
 
 afterAll(() => {
   app.close()
@@ -72,6 +74,7 @@ describe('Create Department', () => {
       })
       .expect(200)
     expect(res.body).toHaveProperty('errors')
+    expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.blank_name)
   })
 
   it('throws error if invalid managerId is passed', async () => {
