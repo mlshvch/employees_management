@@ -8,10 +8,14 @@ export const logFilePath: string = path.join(logFileDir, '.log')
 
 createLogFile()
 
-const streams: Array<{ stream: any }> = [
-  { stream: process.stdout },
-  { stream: fs.createWriteStream(logFilePath) }
-]
+const defineStreams = (): Array<{ stream: any }> => {
+  const streams: Array<{ stream: any }> = [{ stream: fs.createWriteStream(logFilePath) }]
+  const env: string | undefined = process.env.NODE_ENV
+  if (env) {
+    if (['development', 'production'].includes(env)) streams.push({ stream: process.stdout })
+  }
+  return streams
+}
 
 export const logger = pino(
   {
@@ -22,7 +26,7 @@ export const logger = pino(
       }
     }
   },
-  pino.multistream(streams)
+  pino.multistream(defineStreams())
 )
 
 prisma.$on('query', (e) => {
