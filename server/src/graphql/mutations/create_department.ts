@@ -9,12 +9,12 @@ const responseMessages = readResponseMessages()
 
 const checkName = async (name: string): Promise<void> => {
   const message = (await responseMessages).department.error.blankName
-  if (!name) throw new Error(message)
+  if (!name) throw new GraphQLError(message)
 }
 
 const checkManagerId = async (managerId: bigint | number): Promise<void> => {
   const message = (await responseMessages).department.error.invalidManager
-  if ((await prisma.user.findFirst({ where: { id: managerId } })) == null) throw new Error(message)
+  if ((await prisma.user.findFirst({ where: { id: managerId } })) == null) throw new GraphQLError(message)
 }
 
 export const createDepartmentMutation = {
@@ -29,7 +29,12 @@ export const createDepartmentMutation = {
       await checkName(args.name).catch((err) => { throw err })
       await checkManagerId(args.managerId).catch((err) => { throw err })
     } catch (err: Error | any) {
-      return new GraphQLError(err.message)
+      if (err instanceof GraphQLError) {
+        return err
+      } else {
+        logger.error(err)
+        return new GraphQLError('Internal Error')
+      }
     }
     return await prisma.department.create({ data: args })
       .then((user) => { return parseJSONBigIntToNumber(user) })

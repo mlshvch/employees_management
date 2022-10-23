@@ -1,4 +1,7 @@
 {
+  "common": {
+    "403": "forbidden"
+  },
   "department": {
     "error": {
       "blankName": "name cannot be blank",
