@@ -1,6 +1,6 @@
 {
   "common": {
-    "403": "forbidden"
+    "forbidden": "forbidden"
   },
   "department": {
     "error": {

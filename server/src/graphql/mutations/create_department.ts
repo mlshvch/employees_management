@@ -17,6 +17,11 @@ const checkManagerId = async (managerId: bigint | number): Promise<void> => {
   if ((await prisma.user.findFirst({ where: { id: managerId } })) == null) throw new GraphQLError(message)
 }
 
+const authorize = async (userId: number | undefined): Promise<void> => {
+  const message = (await responseMessages).common.forbidden
+  if ((await prisma.user.findFirst({ where: { id: userId } }))?.role !== 'ADMIN') throw new GraphQLError(message)
+}
+
 export const createDepartmentMutation = {
   type: DepartmentType,
   args: {
@@ -24,8 +29,9 @@ export const createDepartmentMutation = {
     managerId: { type: new GraphQLNonNull(GraphQLInt) },
     description: { type: GraphQLString }
   },
-  async resolve (_parent: any, args: any) {
+  async resolve(_parent: any, args: any, cntx: any) {
     try {
+      await authorize(cntx.user.id).catch((err) => { throw err })
       await checkName(args.name).catch((err) => { throw err })
       await checkManagerId(args.managerId).catch((err) => { throw err })
     } catch (err: Error | any) {
