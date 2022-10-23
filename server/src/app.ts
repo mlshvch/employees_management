@@ -84,10 +84,13 @@ app.use('/graphql/auth',
 
 app.use('/graphql',
   passport.authenticate(bearer, { session: false }),
-  graphqlHTTP({
-    schema,
-    graphiql: process.env.NODE_ENV === 'development'
-
-  }))
+  graphqlHTTP((req: any, _res: any) => {
+    return {
+      schema,
+      graphiql: process.env.NODE_ENV === 'development',
+      context: req
+    }
+  })
+)
 
 module.exports = app.listen(port)
