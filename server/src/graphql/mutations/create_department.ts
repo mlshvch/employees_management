@@ -2,10 +2,10 @@ import { GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLError } from 'graphql
 import { prisma } from '../../../db'
 import { DepartmentType } from '../types/department.type'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
-import { readResponseMessages } from '../../../helpers/read_response_messages'
+import { readResponseMessages, ResponseMessages } from '../../../helpers/read_response_messages'
 import { logger } from '../../logger'
 
-const responseMessages = readResponseMessages()
+const responseMessages: Promise<ResponseMessages> = readResponseMessages()
 
 const checkName = async (name: string): Promise<void> => {
   const message = (await responseMessages).department.error.blankName
@@ -29,7 +29,7 @@ export const createDepartmentMutation = {
     managerId: { type: new GraphQLNonNull(GraphQLInt) },
     description: { type: GraphQLString }
   },
-  async resolve (_parent: any, args: any, cntx: any) {
+  async resolve(_parent: any, args: any, cntx: any) {
     try {
       await authorize(cntx.user.id).catch((err) => { throw err })
       await checkName(args.name).catch((err) => { throw err })

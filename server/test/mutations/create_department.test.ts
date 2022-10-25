@@ -3,7 +3,7 @@ import { signInUser, signInAdmin } from '../factories/sign_in_user'
 import { createRandomDepartmentData } from '../factories/department.factory'
 import { prisma } from '../../db'
 import { createNonExistingUser } from '../factories/user.factory'
-import { readResponseMessages } from '../../helpers/read_response_messages'
+import { readResponseMessages, ResponseMessages } from '../../helpers/read_response_messages'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -11,7 +11,7 @@ const url = '/graphql'
 
 let userToken: string
 let adminToken: string
-const responseMessages = readResponseMessages()
+const responseMessages: Promise<ResponseMessages> = readResponseMessages()
 
 afterAll(() => {
   app.close()

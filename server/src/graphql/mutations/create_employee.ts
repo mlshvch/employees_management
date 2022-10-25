@@ -4,10 +4,10 @@ import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 import { GraphQLBoolean, GraphQLNonNull, GraphQLString, GraphQLError } from 'graphql'
 import { GraphQLBigInt } from '../types/scalar/bigint.type'
 import { prisma } from '../../../db'
-import { readResponseMessages } from '../../../helpers/read_response_messages'
+import { readResponseMessages, ResponseMessages } from '../../../helpers/read_response_messages'
 import { logger } from '../../logger'
 
-const responseMessages = readResponseMessages()
+const responseMessages: Promise<ResponseMessages> = readResponseMessages()
 
 const authorize = async (userId: bigint | number): Promise<void> => {
   const message = (await responseMessages).common.forbidden
@@ -52,7 +52,7 @@ export const createEmployeeMutation = {
         return err
       } else {
         logger.error(err)
-        return new GraphQLError('Validations failed')
+        return new GraphQLError('Internal error')
       }
     }
 

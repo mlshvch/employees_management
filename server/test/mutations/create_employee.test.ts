@@ -2,7 +2,7 @@ import request from 'supertest'
 import { signInUser, signInAdmin } from '../factories/sign_in_user'
 import { prisma } from '../../db'
 import { createRandomEmployeeData, createEmployeeDataWithInvalidUserId, createEmployeeDataWithInvalidPositionId, createEmployeeDataWithInvalidDepartmentId, createRandomEmployee } from '../factories/employee.factory'
-import { readResponseMessages } from '../../helpers/read_response_messages'
+import { readResponseMessages, ResponseMessages } from '../../helpers/read_response_messages'
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
 
@@ -11,7 +11,7 @@ const url = '/graphql'
 
 let adminToken: string
 let userToken: string
-let responseMessages: any
+let responseMessages: ResponseMessages
 
 afterAll(() => {
   app.close()
