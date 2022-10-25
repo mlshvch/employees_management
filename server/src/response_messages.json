@@ -1,11 +1,13 @@
 {
   "common": {
-    "forbidden": "forbidden"
+    "forbidden": "forbidden",
+    "internalError": "Internal Error"
   },
   "department": {
     "error": {
       "blankName": "name cannot be blank",
-      "invalidManager": "invalid manager id provided"
+      "invalidManager": "invalid manager id provided",
+      "notExist": "department with provided id doesn't exist"
     }
   },
   "employee": {

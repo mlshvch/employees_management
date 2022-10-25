@@ -4,11 +4,13 @@ import * as fsPromises from 'fs/promises'
 export interface ResponseMessages {
   'common': {
     'forbidden': string
+    'internalError': string
   }
   'department': {
     'error': {
       'blankName': string
       'invalidManager': string
+      'notExist': string
     }
   }
   'employee': {

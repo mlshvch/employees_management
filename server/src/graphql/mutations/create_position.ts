@@ -35,6 +35,9 @@ export const createPositionMutation = {
     }
     return await prisma.position.create({ data: args })
       .then((position: Position) => parseJSONBigIntToNumber(position))
-      .catch((err: Error) => new GraphQLError(err.message.split('description:')[1]))
+      .catch(async (err: Error) => {
+        logger.info(err)
+        return new GraphQLError((await responseMessages).common.internalError)
+      })
   }
 }
