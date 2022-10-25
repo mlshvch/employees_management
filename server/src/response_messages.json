@@ -15,5 +15,11 @@
       "invalidPosition": "invalid position provided",
       "invalidDepartment": "invalid department provided"
     }
+  },
+  "position": {
+    "error": {
+      "blankName": "Position's name cannot be blank",
+      "nameAlreadyTaken": "Position with this name already exists"
+    }
   }
 }

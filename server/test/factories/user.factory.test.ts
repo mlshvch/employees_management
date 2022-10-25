@@ -44,6 +44,6 @@ describe('createRandomUsers', () => {
     const usersNumber = await prisma.user.count()
     const number = Math.floor(Math.random() * 100)
     const createdUsersNumber = (await createRandomUsers(number)).count
-    expect(await prisma.user.count()).toEqual(usersNumber + createdUsersNumber)
+    expect(await prisma.user.count()).toBeGreaterThanOrEqual(usersNumber + createdUsersNumber)
   })
 })
