@@ -5,7 +5,7 @@ import { Position } from '@prisma/client'
 import { parseJSONBigIntToNumber } from '../../../helpers/parse_bigint'
 import { readResponseMessages, ResponseMessages } from '../../../helpers/read_response_messages'
 import { logger } from '../../logger'
-import { handleValidationError } from '../../../helpers/handle_validation_error';
+import { handleValidationError } from '../../../helpers/handle_validation_error'
 
 const responseMessages: Promise<ResponseMessages> = readResponseMessages()
 
@@ -26,7 +26,7 @@ export const createPositionMutation = {
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) }
   },
-  async resolve(_parent: any, args: { name: string }, cntx: any): Promise<object | GraphQLError> {
+  async resolve (_parent: any, args: { name: string }, cntx: any): Promise<object | GraphQLError> {
     try {
       await authorize(cntx.user.id).catch((err: Error | GraphQLError) => { throw err })
       await validateName(args.name).catch((err: Error | GraphQLError) => { throw err })

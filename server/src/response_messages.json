@@ -22,7 +22,8 @@
   "position": {
     "error": {
       "blankName": "Position's name cannot be blank",
-      "nameAlreadyTaken": "Position with this name already exists"
+      "nameAlreadyTaken": "Position with this name already exists",
+      "notExist": "Position with provided id doesn't exist"
     }
   }
 }

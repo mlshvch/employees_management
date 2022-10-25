@@ -26,6 +26,7 @@ export interface ResponseMessages {
     'error': {
       'blankName': string
       'nameAlreadyTaken': string
+      'notExist': string
     }
   }
 }
