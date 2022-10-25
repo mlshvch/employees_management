@@ -5,7 +5,7 @@ import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { SignInType } from '../types/sign_in.type'
 
-const generateToken = (user: any, expiry: number): string => {
+export const generateToken = (user: any, expiry: number): string => {
   const secretToken = process.env.TOKEN_SECRET ?? ''
   if (!secretToken) throw new Error('token is not defined')
   return jwt.sign({ id: Number(user.id), uid: user.uid }, secretToken, { expiresIn: expiry })
