@@ -8,8 +8,10 @@ import { logger } from '../../logger'
 const responseMessages: Promise<ResponseMessages> = readResponseMessages()
 
 const checkName = async (name: string): Promise<void> => {
-  const message = (await responseMessages).department.error.blankName
-  if (!name) throw new GraphQLError(message)
+  const blankNameMessage = (await responseMessages).department.error.blankName
+  const nameAlreadyTakenMessage = (await responseMessages).department.error.nameAlreadyTaken
+  if (!name) throw new GraphQLError(blankNameMessage)
+  if ((await prisma.department.findFirst({ where: { name } })) != null) throw new GraphQLError(nameAlreadyTakenMessage)
 }
 
 const checkManagerId = async (managerId: bigint | number): Promise<void> => {
@@ -29,7 +31,7 @@ export const createDepartmentMutation = {
     managerId: { type: new GraphQLNonNull(GraphQLInt) },
     description: { type: GraphQLString }
   },
-  async resolve (_parent: any, args: any, cntx: any) {
+  async resolve(_parent: any, args: any, cntx: any) {
     try {
       await authorize(cntx.user.id).catch((err) => { throw err })
       await checkName(args.name).catch((err) => { throw err })

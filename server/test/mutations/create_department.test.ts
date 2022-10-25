@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { signInUser, signInAdmin } from '../factories/sign_in_user'
-import { createRandomDepartmentData } from '../factories/department.factory'
+import { createRandomDepartmentData, createRandomDepartment } from '../factories/department.factory';
 import { prisma } from '../../db'
 import { createNonExistingUser } from '../factories/user.factory'
 import { readResponseMessages, ResponseMessages } from '../../helpers/read_response_messages'
@@ -97,6 +97,26 @@ describe('Create Department', () => {
       .expect(200)
     expect(res.body).toHaveProperty('errors')
     expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.blankName)
+  })
+
+  it('throws error if name is already taken', async () => {
+    const dep = await createRandomDepartment()
+    const res = await request(app).post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `mutation {
+      createDepartment(name: "${dep.name}", managerId: ${dep.managerId}, description:"${dep.description}") {
+        id, 
+        name, 
+        managerId, 
+        description, 
+        createdAt
+      }
+    }`
+      })
+      .expect(200)
+    expect(res.body).toHaveProperty('errors')
+    expect(res.body.errors[0].message).toEqual((await responseMessages).department.error.nameAlreadyTaken)
   })
 
   it('throws error if invalid managerId is passed', async () => {
