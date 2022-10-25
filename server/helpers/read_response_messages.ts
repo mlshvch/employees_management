@@ -11,6 +11,7 @@ export interface ResponseMessages {
       'blankName': string
       'invalidManager': string
       'notExist': string
+      'nameAlreadyTaken': string
     }
   }
   'employee': {

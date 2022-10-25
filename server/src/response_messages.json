@@ -7,7 +7,8 @@
     "error": {
       "blankName": "name cannot be blank",
       "invalidManager": "invalid manager id provided",
-      "notExist": "department with provided id doesn't exist"
+      "notExist": "department with provided id doesn't exist",
+      "nameAlreadyTaken": "Department with this name already exists"
     }
   },
   "employee": {
