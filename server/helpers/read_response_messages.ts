@@ -19,6 +19,7 @@ export interface ResponseMessages {
       'userAlreadyTaken': string
       'invalidPosition': string
       'invalidDepartment': string
+      'notExist': string
     }
   }
   'position': {
