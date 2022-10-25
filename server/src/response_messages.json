@@ -7,5 +7,13 @@
       "blankName": "name cannot be blank",
       "invalidManager": "invalid manager id provided"
     }
+  },
+  "employee": {
+    "error": {
+      "invalidUser": "invalid user provided",
+      "userAlreadyTaken": "Profile for this user has already been created",
+      "invalidPosition": "invalid position provided",
+      "invalidDepartment": "invalid department provided"
+    }
   }
 }

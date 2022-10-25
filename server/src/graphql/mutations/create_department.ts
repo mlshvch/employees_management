@@ -29,7 +29,7 @@ export const createDepartmentMutation = {
     managerId: { type: new GraphQLNonNull(GraphQLInt) },
     description: { type: GraphQLString }
   },
-  async resolve(_parent: any, args: any, cntx: any) {
+  async resolve (_parent: any, args: any, cntx: any) {
     try {
       await authorize(cntx.user.id).catch((err) => { throw err })
       await checkName(args.name).catch((err) => { throw err })
