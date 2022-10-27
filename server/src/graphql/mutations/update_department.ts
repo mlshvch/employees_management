@@ -41,7 +41,7 @@ export const updateDepartmentMutation = {
     managerId: { type: GraphQLBigInt },
     description: { type: GraphQLString }
   },
-  async resolve(_parent: any, args: { id?: number | bigint, name?: string, description?: string, managerId?: number }, cntx: any) {
+  async resolve (_parent: any, args: { id?: number | bigint, name?: string, description?: string, managerId?: number }, cntx: any) {
     try {
       await checkDepartmentId(args.id).catch((err) => { throw err })
       await authorize(cntx.user.id, args.id).catch((err) => { throw err })

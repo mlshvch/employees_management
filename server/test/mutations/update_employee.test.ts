@@ -1,11 +1,13 @@
 import request from 'supertest'
-import { signInUser } from '../factories/sign_in_user'
+import { signInUser, signInAdmin } from '../factories/sign_in_user'
 import { prisma } from '../../db'
 import { selectRandomEmployee, createRandomEmployeeData, EmployeeType } from '../factories/employee.factory'
 import { Employee, Position, Department } from '@prisma/client'
 import { parseJSONBigIntToNumber } from '../../helpers/parse_bigint'
 import { selectRandomPosition } from '../factories/position.factory'
-import { selectRandomDepartment } from '../factories/department.factory'
+import { selectRandomDepartment, createNonExistingDepartment } from '../factories/department.factory'
+import { ResponseMessages, readResponseMessages } from '../../helpers/read_response_messages'
+import { faker } from '@faker-js/faker'
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('../../src/app')
@@ -15,43 +17,15 @@ afterAll(() => {
   app.close()
 })
 
-let token: string
+let adminToken: string
 const url: string = '/graphql'
-
+let responseMessages: ResponseMessages
 beforeAll(async () => {
-  token = await signInUser()
+  adminToken = await signInAdmin()
+  responseMessages = await readResponseMessages()
 })
 
 describe('updateEmployee mutation', () => {
-  it('updates the employee if user is signed in', async () => {
-    const emp: Employee = await selectRandomEmployee()
-    const newData: EmployeeType = await createRandomEmployeeData()
-    const res = await request(app)
-      .post(url)
-      .set({ authorization: `Bearer ${token}` })
-      .send({
-        query: `
-        mutation {
-          updateEmployee(
-            id: ${emp.id}
-            name: "${newData.name}"
-          ) {
-            id,
-            userId,
-            name,
-            surname,
-            positionId,
-            staffMember,
-            departmentId
-          }
-        }
-      `
-      })
-      .expect(200)
-    expect((await prisma.employee.findFirstOrThrow({ where: { id: emp.id } })).name).toEqual(newData.name)
-    expect(res.body.data).toBeTruthy()
-  })
-
   it('throws unauthorized code if user is not signed in ', async () => {
     const emp = await selectRandomEmployee()
     await request(app)
@@ -76,9 +50,35 @@ describe('updateEmployee mutation', () => {
       .expect(401)
   })
 
-  it('updates the employees name', async () => {
+  it('updates the employee if user is signed in and has ADMIN role', async () => {
     const emp: Employee = await selectRandomEmployee()
-    const newData: EmployeeType = await createRandomEmployeeData()
+    const res = await request(app)
+      .post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `
+        mutation {
+          updateEmployee(
+            id: ${emp.id}
+          ) {
+            id,
+            userId,
+            name,
+            surname,
+            positionId,
+            staffMember,
+            departmentId
+          }
+        }
+      `
+      })
+      .expect(200)
+    expect(res.body.data.updateEmployee).toEqual(parseJSONBigIntToNumber(emp))
+  })
+
+  it('updates the employee if user owns employee profile', async () => {
+    const emp: Employee = await selectRandomEmployee()
+    const token = await signInUser(emp.userId)
     const res = await request(app)
       .post(url)
       .set({ authorization: `Bearer ${token}` })
@@ -87,7 +87,35 @@ describe('updateEmployee mutation', () => {
         mutation {
           updateEmployee(
             id: ${emp.id}
-            name: "${newData.name}"
+          ) {
+            id,
+            userId,
+            name,
+            surname,
+            positionId,
+            staffMember,
+            departmentId
+          }
+        }
+      `
+      })
+      .expect(200)
+    expect(res.body.data.updateEmployee).toEqual(parseJSONBigIntToNumber(emp))
+  })
+
+  it('updates the employees if new name is valid', async () => {
+    const emp: Employee = await selectRandomEmployee()
+    const name: string = (await createRandomEmployeeData()).name
+    console.log(typeof (name))
+    const res = await request(app)
+      .post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `
+        mutation {
+          updateEmployee(
+            id: ${emp.id},
+            name: "${name}"
           ) {
             id,
             userId,
@@ -102,16 +130,16 @@ describe('updateEmployee mutation', () => {
       })
       .expect(200)
     const updatedUser: Employee = await prisma.employee.findFirstOrThrow({ where: { id: emp.id } })
-    expect(updatedUser.name).toEqual(newData.name)
+    expect(updatedUser.name).toEqual(name)
     expect(res.body.data.updateEmployee).toEqual(parseJSONBigIntToNumber(updatedUser))
   })
 
-  it('updates the employees surname', async () => {
+  it('updates the employees surname is new surname is valid', async () => {
     const emp: Employee = await selectRandomEmployee()
     const newData: EmployeeType = await createRandomEmployeeData()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -136,12 +164,12 @@ describe('updateEmployee mutation', () => {
     expect(res.body.data.updateEmployee).toEqual(parseJSONBigIntToNumber(updatedUser))
   })
 
-  it('updates the employees positionId', async () => {
+  it('updates the employees positionId if new positionId is valid', async () => {
     const emp: Employee = await selectRandomEmployee()
     const newData: Position = await selectRandomPosition()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -170,7 +198,7 @@ describe('updateEmployee mutation', () => {
     const emp = await selectRandomEmployee()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -195,12 +223,12 @@ describe('updateEmployee mutation', () => {
     expect(res.body.data.updateEmployee).toEqual(parseJSONBigIntToNumber(updatedUser))
   })
 
-  it('updates the employees departmentId', async () => {
+  it('updates the employees departmentId if departmentId is valid', async () => {
     const emp: Employee = await selectRandomEmployee()
     const newData: Department = await selectRandomDepartment()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -229,7 +257,7 @@ describe('updateEmployee mutation', () => {
     const emp: Employee = await selectRandomEmployee()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -250,14 +278,43 @@ describe('updateEmployee mutation', () => {
       })
       .expect(200)
     expect(res.body.data.updateEmployee).toBeNull()
-    expect(res.body.errors[0].message).toEqual('name can not be blank')
+    expect(res.body.errors[0].message).toEqual(responseMessages.employee.error.blankName)
+  })
+
+  it('throws GraphQLError if provided invalid name', async () => {
+    const emp: Employee = await selectRandomEmployee()
+    const name: string = await faker.phone.imei()
+    const res = await request(app)
+      .post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `
+        mutation {
+          updateEmployee(
+            id: ${emp.id}
+            name: "${name}"
+          ) {
+            id,
+            userId,
+            name,
+            surname,
+            positionId,
+            staffMember,
+            departmentId
+          }
+        }
+      `
+      })
+      .expect(200)
+    expect(res.body.data.updateEmployee).toBeNull()
+    expect(res.body.errors[0].message).toEqual(responseMessages.employee.error.invalidName)
   })
 
   it('throws GraphQLError if provided empty surname', async () => {
     const emp: Employee = await selectRandomEmployee()
     const res = await request(app)
       .post(url)
-      .set({ authorization: `Bearer ${token}` })
+      .set({ authorization: `Bearer ${adminToken}` })
       .send({
         query: `
         mutation {
@@ -278,6 +335,64 @@ describe('updateEmployee mutation', () => {
       })
       .expect(200)
     expect(res.body.data.updateEmployee).toBeNull()
-    expect(res.body.errors[0].message).toEqual('surname can not be blank')
+    expect(res.body.errors[0].message).toEqual(responseMessages.employee.error.blankSurname)
+  })
+
+  it('throws GraphQLError if provided invalid surname', async () => {
+    const emp: Employee = await selectRandomEmployee()
+    const surname: string = await faker.phone.imei()
+    const res = await request(app)
+      .post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `
+        mutation {
+          updateEmployee(
+            id: ${emp.id}
+            surname: "${surname}"
+          ) {
+            id,
+            userId,
+            name,
+            surname,
+            positionId,
+            staffMember,
+            departmentId
+          }
+        }
+      `
+      })
+      .expect(200)
+    expect(res.body.data.updateEmployee).toBeNull()
+    expect(res.body.errors[0].message).toEqual(responseMessages.employee.error.invalidSurname)
+  })
+
+  it('throws GraphQLError if provided invalid departmentId', async () => {
+    const emp: Employee = await selectRandomEmployee()
+    const depId: number | bigint = (await createNonExistingDepartment()).id
+    const res = await request(app)
+      .post(url)
+      .set({ authorization: `Bearer ${adminToken}` })
+      .send({
+        query: `
+        mutation {
+          updateEmployee(
+            id: ${emp.id}
+            departmentId: ${depId}
+          ) {
+            id,
+            userId,
+            name,
+            surname,
+            positionId,
+            staffMember,
+            departmentId
+          }
+        }
+      `
+      })
+      .expect(200)
+    expect(res.body.data.updateEmployee).toBeNull()
+    expect(res.body.errors[0].message).toEqual(responseMessages.employee.error.invalidDepartment)
   })
 })

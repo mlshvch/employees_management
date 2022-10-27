@@ -21,6 +21,10 @@ export interface ResponseMessages {
       'invalidPosition': string
       'invalidDepartment': string
       'notExist': string
+      'blankName': string
+      'blankSurname': string
+      'invalidName': string
+      'invalidSurname': string
     }
   }
   'position': {
@@ -34,5 +38,7 @@ export interface ResponseMessages {
 
 export const readResponseMessages = async (): Promise<any> => {
   const filePath = path.join(process.cwd(), 'src', 'response_messages.json')
-  return JSON.parse(await fsPromises.readFile(filePath, { encoding: 'utf-8' }).catch((err) => { throw err }))
+  return JSON.parse(await fsPromises.readFile(filePath, { encoding: 'utf-8' }).catch((err) => {
+    throw err
+  }))
 }

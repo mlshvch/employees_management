@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { signInUser, signInAdmin } from '../factories/sign_in_user'
-import { createRandomDepartmentData, createRandomDepartment } from '../factories/department.factory';
+import { createRandomDepartmentData, createRandomDepartment } from '../factories/department.factory'
 import { prisma } from '../../db'
 import { createNonExistingUser } from '../factories/user.factory'
 import { readResponseMessages, ResponseMessages } from '../../helpers/read_response_messages'
