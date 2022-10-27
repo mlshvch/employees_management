@@ -1,0 +1,34 @@
+{
+  "common": {
+    "forbidden": "forbidden",
+    "internalError": "Internal Error"
+  },
+  "department": {
+    "error": {
+      "blankName": "name cannot be blank",
+      "invalidManager": "invalid manager id provided",
+      "notExist": "department with provided id doesn't exist",
+      "nameAlreadyTaken": "Department with this name already exists"
+    }
+  },
+  "employee": {
+    "error": {
+      "invalidUser": "invalid user provided",
+      "userAlreadyTaken": "Profile for this user has already been created",
+      "invalidPosition": "invalid position provided",
+      "invalidDepartment": "invalid department provided",
+      "notExist": "Employee with provided id doesn't exist",
+      "blankName": "Name cannot be blank",
+      "invalidName": "Name should not contain special characters",
+      "invalidSurname": "Surname should not contain special characters",
+      "blankSurname": "Surname cannot be blank"
+    }
+  },
+  "position": {
+    "error": {
+      "blankName": "Position's name cannot be blank",
+      "nameAlreadyTaken": "Position with this name already exists",
+      "notExist": "Position with provided id doesn't exist"
+    }
+  }
+}

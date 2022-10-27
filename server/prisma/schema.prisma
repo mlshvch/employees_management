@@ -10,8 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id         BigInt       @id @default(autoincrement())
+  role       Role         @default(USER)
   uid        String       @unique
   password   String
   tokens     Json
