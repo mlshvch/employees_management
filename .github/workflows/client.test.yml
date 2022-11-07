@@ -1,0 +1,24 @@
+name: server tests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./server
+
+jobs:
+  # Label of the container job
+  client-test-job:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run tests
+        run: yarn test
+
