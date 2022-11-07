@@ -21,4 +21,4 @@ jobs:
       - name: Install modules
         run: yarn
       - name: Run linter
-        run: yarn eslint -c ./eslintrc.js .
+        run: yarn test
