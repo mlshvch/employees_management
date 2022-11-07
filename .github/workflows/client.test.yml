@@ -1,4 +1,4 @@
-name: server tests
+name: client tests
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./server
+    working-directory: ./client
 
 jobs:
   # Label of the container job
