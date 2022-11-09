@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     # Docker Hub image that `container-job` executes in
     container: node:16.17.0-bullseye
-    ~
+
     # Service containers to run with `container-job`
     steps:
     - uses: actions/checkout@v2
